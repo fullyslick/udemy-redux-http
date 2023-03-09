@@ -18,7 +18,12 @@ export const getCartData = () => {
         
         try {
            const cartData = await fetchData();
-           dispatch(cartActions.replaceCart(cartData));
+        
+           dispatch(cartActions.replaceCart({
+            items: cartData.items || [], // Solves issue when cart is empty after all items are removed
+            totalQuantity: cartData.totalQuantity
+           }));
+
         } catch (err) {
             dispatch(uiActions.showNotification({
                 status: 'error',
