@@ -48,7 +48,11 @@ export const sendCartData = (cart) => {
   
         const response = await fetch('https://udemy-redux-advanced-db615-default-rtdb.europe-west1.firebasedatabase.app/cart.json', {
           method: 'PUT', // PUT request should overwrite existing server data
-          body: JSON.stringify(cart)
+          body: JSON.stringify({
+            items: cart.items,
+            totalQuantity: cart.totalQuantity
+            // Bypass isInitialGet which is to blocks updating the cart data on server on initial cart load
+          })
         });
   
         if (!response.ok) {

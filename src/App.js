@@ -30,6 +30,12 @@ function App() {
       return;
     }
 
+    // Blocks updating data to server if cart data changed due to component load
+    if (cart.isInitialGet) {
+
+      return;
+    }
+
     dispatch(sendCartData(cart));
   }, [cart, dispatch]);
 
