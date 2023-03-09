@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { uiActions } from './store/ui-slice';
 import Notification from './components/UI/Notification';
+import { sendCartData } from './store/cart-slice';
 
 // Flag used to detect when component loads for the first time.
 // It will not be used for re-mounting, or updating, only when the first time this file is parsed
@@ -19,50 +20,14 @@ function App() {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  useEffect(() => {  
     // This prevents sending data to server on initial app load
     if (isInitialLoad) {
       isInitialLoad = false
       return;
     }
 
-    /*
-      * Send data to server
-      * ASYNC CALLS SHOULD NOT BE DONE INSIDE REDUX
-      * Here we subscribe to redux state update,
-      * once updated, the redux state data is send to server
-    */
-    const sendData = async () => {
-      dispatch(uiActions.showNotification({
-        status: 'pending',
-        title: 'Pending',
-        message: 'Sending data....'
-      }));
-
-      const response = await fetch('https://udemy-redux-advanced-db615-default-rtdb.europe-west1.firebasedatabase.app/cart.json', {
-        method: 'PUT', // PUT request should overwrite existing server data
-        body: JSON.stringify(cart)
-      });
-
-      if (!response.ok) {
-        throw new Error('Something went wrong!');
-      }
-
-      dispatch(uiActions.showNotification({
-        status: 'success',
-        title: 'Success',
-        message: 'Data has been sent to server'
-      }));
-    };
-
-
-    sendData().catch(err => {
-      dispatch(uiActions.showNotification({
-        status: 'error',
-        title: 'Error',
-        message: err.message
-      }));
-    });
+    dispatch(sendCartData(cart));
   }, [cart, dispatch]);
 
   return (
