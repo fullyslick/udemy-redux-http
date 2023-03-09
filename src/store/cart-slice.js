@@ -36,6 +36,7 @@ const cartSlice = createSlice({
             if (foundItem) {
                 if (foundItem.qty === 1) {
                     state.items = state.items.filter(item => item.id !== id);
+                    console.log(state.items.filter(item => item.id !== id));
                 } else {
                     foundItem.qty--;
                     foundItem.totalPrice = foundItem.totalPrice - foundItem.price;
@@ -43,6 +44,10 @@ const cartSlice = createSlice({
 
                 state.totalQuantity--;
             }
+        },
+        replaceCart(state, action) {        
+            state.items = action.payload.items;
+            state.totalQuantity = action.payload.totalQuantity;
         }
     }
 });

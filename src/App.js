@@ -5,7 +5,7 @@ import Products from './components/Shop/Products';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import Notification from './components/UI/Notification';
-import { sendCartData } from './store/cart-actions';
+import { sendCartData, getCartData } from './store/cart-actions';
 
 // Flag used to detect when component loads for the first time.
 // It will not be used for re-mounting, or updating, only when the first time this file is parsed
@@ -19,9 +19,13 @@ function App() {
 
   const dispatch = useDispatch();
 
+  useEffect( () => {
+    dispatch(getCartData());
+  }, [dispatch]);
+
   useEffect(() => {  
     // This prevents sending data to server on initial app load
-    if (isInitialLoad) {
+    if (isInitialLoad) {    
       isInitialLoad = false
       return;
     }
