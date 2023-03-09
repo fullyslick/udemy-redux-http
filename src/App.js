@@ -4,9 +4,8 @@ import Layout from './components/Layout/Layout';
 import Products from './components/Shop/Products';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import { uiActions } from './store/ui-slice';
 import Notification from './components/UI/Notification';
-import { sendCartData } from './store/cart-slice';
+import { sendCartData } from './store/cart-actions';
 
 // Flag used to detect when component loads for the first time.
 // It will not be used for re-mounting, or updating, only when the first time this file is parsed
