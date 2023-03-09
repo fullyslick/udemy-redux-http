@@ -7,6 +7,10 @@ import { useEffect } from 'react';
 import { uiActions } from './store/ui-slice';
 import Notification from './components/UI/Notification';
 
+// Flag used to detect when component loads for the first time.
+// It will not be used for re-mounting, or updating, only when the first time this file is parsed
+let isInitialLoad = true;
+
 function App() {
   const showCart = useSelector(state => state.ui.cartIsVisible);
 
@@ -15,14 +19,19 @@ function App() {
 
   const dispatch = useDispatch();
 
-  /*
-  * Send data to server
-  * ASYNC CALLS SHOULD NOT BE DONE INSIDE REDUX
-  * Here we subscribe to redux state update,
-  * once updated, the redux state data is send to server
-  */
   useEffect(() => {
+    // This prevents sending data to server on initial app load
+    if (isInitialLoad) {
+      isInitialLoad = false
+      return;
+    }
 
+    /*
+      * Send data to server
+      * ASYNC CALLS SHOULD NOT BE DONE INSIDE REDUX
+      * Here we subscribe to redux state update,
+      * once updated, the redux state data is send to server
+    */
     const sendData = async () => {
       dispatch(uiActions.showNotification({
         status: 'pending',
